@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amjed Abubaker — Network & Security Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #080C1E;
+    --navy2:  #0F1428;
+    --card:   #121730;
+    --cyan:   #00D4FF;
+    --purple: #8B5CF6;
+    --coral:  #FF6B6B;
+    --green:  #00E5A0;
+    --orange: #F97316;
+    --white:  #E8EEFF;
+    --muted:  #7B86A8;
+    --border: rgba(0,212,255,0.13);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.65; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 3rem;
+    background: rgba(8,12,30,0.9); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--cyan); }
+  .logo span { color: var(--purple); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+  nav a:hover { color: var(--cyan); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; position: relative;
+    display: flex; align-items: center;
+    padding: 7rem 3rem 4rem;
+    overflow: hidden;
+  }
+  canvas#net { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.5; }
+  .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+  .eyebrow::before { content: '> '; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 4vw, 3.6rem); font-weight: 700; line-height: 1.1; margin-bottom: 1rem; }
+  h1 .c { color: var(--cyan); }
+  h1 .p { color: var(--purple); }
+  .hero-tagline { color: var(--muted); font-size: 1rem; max-width: 480px; margin-bottom: 1.5rem; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .badge { padding: 0.28rem 0.85rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .bc { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.35); color: var(--cyan); }
+  .bp { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.4); color: #C4B5FD; }
+  .br { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.35); color: var(--coral); }
+  .bg { background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.3); color: var(--green); }
+  .bo { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); color: var(--orange); }
+  .cta-row { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1.6rem; border-radius: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; border: none; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #fff; box-shadow: 0 0 18px rgba(0,212,255,0.25); }
+  .btn-primary:hover { box-shadow: 0 0 28px rgba(0,212,255,0.45); }
+  .btn-outline { border: 1px solid var(--border); color: var(--white); background: transparent; }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* HERO CARD */
+  .hero-card {
+    background: rgba(18,23,48,0.85); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+    backdrop-filter: blur(10px);
+  }
+  .hc-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .hc-title { font-size: 0.8rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; margin-bottom: 1.2rem; }
+  .hc-info { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.4rem; }
+  .hc-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted); }
+  .hc-row span:first-child { color: var(--cyan); font-size: 1rem; }
+  .hc-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+  .hc-certs { display: flex; flex-direction: column; gap: 0.5rem; }
+  .cert-pill { display: flex; align-items: center; gap: 0.6rem; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; }
+  .cert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cd-c { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .cd-p { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+  .cd-r { background: var(--coral); box-shadow: 0 0 6px var(--coral); }
+  .cd-g { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .cd-o { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+
+  /* SECTIONS */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 3rem; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 700; margin-bottom: 0.75rem; }
+  .sec-intro { color: var(--muted); max-width: 540px; margin-bottom: 2.8rem; font-size: 0.93rem; }
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 0 3rem; }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .exp-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.75rem;
+    display: grid; grid-template-columns: auto 1fr; gap: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .exp-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+  .exp-timeline { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .exp-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .exp-line { width: 2px; flex: 1; background: var(--border); border-radius: 2px; }
+  .exp-role { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .exp-company { font-size: 0.82rem; color: var(--cyan); font-weight: 500; margin-bottom: 0.2rem; }
+  .exp-period { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.85rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .exp-bullets li { font-size: 0.84rem; color: var(--muted); padding-left: 1rem; position: relative; }
+  .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--cyan); }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+  .proj-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    display: flex; flex-direction: column;
+  }
+  .proj-card:hover { transform: translateY(-5px); border-color: rgba(0,212,255,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+  .proj-img { width: 100%; height: 200px; object-fit: cover; object-position: top left; border-bottom: 1px solid var(--border); background: #0a0e2a; }
+  .proj-img-placeholder { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-bottom: 1px solid var(--border); }
+  .proj-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+  .proj-type-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem; }
+  .ptfw  { background: rgba(255,107,107,0.12); color: var(--coral); }
+  .ptnd  { background: rgba(0,212,255,0.1); color: var(--cyan); }
+  .ptvpn { background: rgba(0,229,160,0.1); color: var(--green); }
+  .ptsd  { background: rgba(249,115,22,0.1); color: var(--orange); }
+  .proj-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .proj-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; flex: 1; }
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.1rem; }
+  .tech { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; padding: 0.18rem 0.48rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 4px; color: var(--muted); }
+  .proj-link { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; font-weight: 600; color: var(--white); text-decoration: none; transition: color 0.2s; margin-top: auto; }
+  .proj-link:hover { color: var(--cyan); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.1rem; }
+  .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.3rem; transition: border-color 0.2s, transform 0.2s; }
+  .skill-card:hover { border-color: var(--purple); transform: translateY(-3px); }
+  .sk-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .skill-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .skill-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* CONTACT */
+  #contact { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 5rem 3rem; text-align: center; }
+  #contact .inner { max-width: 600px; margin: 0 auto; }
+  #contact p { color: var(--muted); margin-bottom: 2rem; font-size: 0.93rem; }
+  .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  footer { text-align: center; padding: 1.75rem; font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-card { display: none; }
+    .exp-card { grid-template-columns: 1fr; }
+    .exp-timeline { display: none; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">[<span>amjed</span>@portfolio ~]$</div>
+  <ul>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="net"></canvas>
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Network &amp; Security Engineer · Dubai, UAE</p>
+      <h1>
+        <span class="c">Securing</span> &amp;<br/>
+        <span class="p">Connecting</span><br/>
+        Enterprise Networks
+      </h1>
+      <p class="hero-tagline">
+        8+ years delivering enterprise network security — from PoC and HLD/LLD design to full deployment and managed support. Specializing in Fortinet NGFW, SD-WAN, and zero-trust architectures.
+      </p>
+      <div class="hero-badges">
+        <span class="badge bc">Fortinet NSE 4</span>
+        <span class="badge bp">CCNP ENCOR</span>
+        <span class="badge bg">AWS Cloud Practitioner</span>
+        <span class="badge br">Peplink Certified</span>
+        <span class="badge bo">Huawei Certified</span>
+      </div>
+      <div class="cta-row">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="mailto:Amjed1996@gmail.com" class="btn btn-outline">📧 Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-name">Amjed Abubaker Mohamed</div>
+      <div class="hc-title">// Network &amp; Security Engineer</div>
+      <div class="hc-info">
+        <div class="hc-row"><span>📍</span><span>Dubai, UAE</span></div>
+        <div class="hc-row"><span>📞</span><span>+971 55 366 4064</span></div>
+        <div class="hc-row"><span>✉️</span><span>Amjed1996@gmail.com</span></div>
+        <div class="hc-row"><span>🎓</span><span>BSc Telecom Engineering</span></div>
+      </div>
+      <hr class="hc-divider"/>
+      <p style="font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;">Certifications</p>
+      <div class="hc-certs">
+        <div class="cert-pill"><span class="cert-dot cd-c"></span>Fortinet NSE 4 — FortiOS 7.6</div>
+        <div class="cert-pill"><span class="cert-dot cd-p"></span>CCNP ENCOR</div>
+        <div class="cert-pill"><span class="cert-dot cd-g"></span>AWS Cloud Practitioner</div>
+        <div class="cert-pill"><span class="cert-dot cd-r"></span>Peplink Certified Engineer</div>
+        <div class="cert-pill"><span class="cert-dot cd-o"></span>Huawei HCSA — IP Network</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div"/>
+
+<!-- EXPERIENCE -->
+<div class="section-wrap" id="experience">
+  <p class="section-label">// experience</p>
+  <h2>Work Experience</h2>
+  <p class="sec-intro">Over 8 years across telecom, SD-WAN, and enterprise network security delivery.</p>
+  <div class="exp-list">
+
+    <div class="exp-card">
+      <div class="exp-timeline">
+        <div class="exp-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">Network & Security Engineer — Managed Services</div>
+        <div class="exp-company">Emirates Telecommunications Group (Etisalat UAE)</div>
+        <div class="exp-period">Aug 2024 – Present</div>
+        <ul class="exp-bullets">
+          <li>Technical authority for enterprise customer onboarding and managed service delivery.</li>
+          <li>Designed and managed Fortinet FortiGate NGFWs — zone-based segmentation, DMZ architectures, complex policy migrations.</li>
+          <li>Deployed UTM profiles: IPS, URL filtering, application control, and SSL inspection.</li>
+          <li>Managed site-to-site &amp; remote access VPN (IPSec IKEv1/v2, SSL/TLS) aligned to zero trust models.</li>
+          <li>Produced HLDs, LLDs, and as-built runbooks for customer sign-off.</li>
+          <li>Configured Huawei S-series switches and APs via iMaster NCE-Campus.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-timeline">
+        <div class="exp-dot" style="background:var(--purple);box-shadow:0 0 8px var(--purple)"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div>
+        <div class="exp-role">Network Engineer — Customer Support</div>
+        <div class="exp-company">Terrenova UAE, Dubai</div>
+        <div class="exp-period">Aug 2023 – Feb 2024</div>
+        <ul class="exp-bullets">
+          <li>Conducted technical workshops to gather requirements and produce topology diagrams and IP schemas.</li>
+          <li>Designed secure SD-WAN environments using Peplink SpeedFusion — HA backhaul and failover.</li>
+          <li>Configured BGP, OSPF, and static routing across distributed enterprise nodes.</li>
+          <li>Diagnosed packet-level anomalies and optimized VPN/SD-WAN using InControl 2, SolarWinds, PRTG.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-timeline">
+        <div class="exp-dot" style="background:var(--orange);box-shadow:0 0 8px var(--orange)"></div>
+      </div>
+      <div>
+        <div class="exp-role">Radio Network Engineer — NPOC</div>
+        <div class="exp-company">Huawei Sudan, Khartoum</div>
+        <div class="exp-period">Aug 2018 – Aug 2023</div>
+        <ul class="exp-bullets">
+          <li>Monitored radio network KPIs, identified capacity constraints and optimization opportunities.</li>
+          <li>Deployed automated scripts for 3G/4G technology integrations and neighboring relations.</li>
+          <li>Executed capacity planning for increasing traffic demands across national mobile networks.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div"/>
+
+<!-- PROJECTS -->
+<div class="section-wrap" id="projects">
+  <p class="section-label">// projects</p>
+  <h2>Implemented Projects</h2>
+  <p class="sec-intro">Real network architectures and security deployments — designed, built, and documented end-to-end.</p>
+  <div class="projects-grid">
+
+    <div class="proj-card">
+      <img src="topology.png" alt="Multi-Zone Firewall Topology" class="proj-img"/>
+      <div class="proj-body">
+        <span class="proj-type-badge ptfw">Firewall / Security</span>
+        <h3>Multi-Zone FortiGate Security Architecture</h3>
+        <p>Designed a full zone-based security deployment with DMZ, LAN, WAN, and management zones. Includes dual firewall redundancy (FW1–FW4), VLAN segmentation (VLAN 40/50), IPS profiles, FAZ logging, and Active Directory integration.</p>
+        <div class="tech-stack">
+          <span class="tech">Fortinet FortiGate</span>
+          <span class="tech">FortiAnalyzer</span>
+          <span class="tech">DMZ Design</span>
+          <span class="tech">VLAN 40/50</span>
+          <span class="tech">Active Directory</span>
+          <span class="tech">Zone-Based FW</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <img src="sdwan.png" alt="Fortinet SD-WAN" class="proj-img"/>
+      <div class="proj-body">
+        <span class="proj-type-badge ptsd">SD-WAN</span>
+        <h3>Fortinet HA SD-WAN with Dual ISP</h3>
+        <p>Built an active-active Fortinet SD-WAN with dual-ISP failover and intelligent path selection. Dual FortiGate HA cluster with WAN load balancing across two ISP clouds, QoS SLA probes, and automated failover. Reduced WAN costs while improving application uptime.</p>
+        <div class="tech-stack">
+          <span class="tech">Fortinet SD-WAN</span>
+          <span class="tech">HA Cluster</span>
+          <span class="tech">Dual ISP</span>
+          <span class="tech">SLA Probes</span>
+          <span class="tech">QoS</span>
+          <span class="tech">BGP</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <img src="network2.png" alt="Peplink SD-WAN Terrenova" class="proj-img"/>
+      <div class="proj-body">
+        <span class="proj-type-badge ptvpn">VPN / SD-WAN</span>
+        <h3>Peplink SpeedFusion Enterprise SD-WAN</h3>
+        <p>Designed and deployed a Peplink SD-WAN architecture for Terrenova using SpeedFusion bonding tunnels with PSD Core-FW, MPBN switching fabric, and L2VPN connectivity to Huawei BSC/RNC infrastructure. Delivered HA backhaul with multi-link failover.</p>
+        <div class="tech-stack">
+          <span class="tech">Peplink SpeedFusion</span>
+          <span class="tech">L2VPN</span>
+          <span class="tech">MPBN</span>
+          <span class="tech">Huawei BSC/RNC</span>
+          <span class="tech">InControl 2</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-img-placeholder" style="background:linear-gradient(135deg,#0a1628,#1a0a2e)">🔐</div>
+      <div class="proj-body">
+        <span class="proj-type-badge ptfw">Zero Trust / VPN</span>
+        <h3>IPSec IKEv2 Site-to-Site VPN with Zero Trust</h3>
+        <p>Deployed IPSec IKEv2 site-to-site VPNs across enterprise branches with certificate-based authentication, strict least-privilege firewall policies, and zone segmentation aligned to zero-trust principles. Managed at Etisalat UAE.</p>
+        <div class="tech-stack">
+          <span class="tech">IPSec IKEv2</span>
+          <span class="tech">FortiGate VPN</span>
+          <span class="tech">PKI / Certificates</span>
+          <span class="tech">Zero Trust</span>
+          <span class="tech">SSL VPN</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-img-placeholder" style="background:linear-gradient(135deg,#0a1a12,#0d2818)">☁️</div>
+      <div class="proj-body">
+        <span class="proj-type-badge ptnd">Cloud / Automation</span>
+        <h3>AWS Network Infrastructure &amp; Automation</h3>
+        <p>Architected AWS cloud networking with VPC design, Route 53 DNS, and ALB configuration. Developed Python (Netmiko) scripts for network automation and used Cisco EEM for event-driven config management. Reduced manual provisioning time significantly.</p>
+        <div class="tech-stack">
+          <span class="tech">AWS VPC</span>
+          <span class="tech">Route 53</span>
+          <span class="tech">ALB</span>
+          <span class="tech">Python / Netmiko</span>
+          <span class="tech">Cisco EEM</span>
+          <span class="tech">Ansible</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-img-placeholder" style="background:linear-gradient(135deg,#1a0a0a,#2a1010)">📡</div>
+      <div class="proj-body">
+        <span class="proj-type-badge ptnd">Campus Network</span>
+        <h3>Enterprise Campus Switching &amp; Wireless</h3>
+        <p>Designed and deployed end-to-end campus network solutions at Etisalat — Huawei S-series core/distribution/access switching stacks, wireless APs, and integration with iMaster NCE-Campus for centralized cloud management and policy enforcement.</p>
+        <div class="tech-stack">
+          <span class="tech">Huawei S-Series</span>
+          <span class="tech">iMaster NCE</span>
+          <span class="tech">OSPF</span>
+          <span class="tech">VLAN / STP</span>
+          <span class="tech">Wireless APs</span>
+          <span class="tech">QoS</span>
+        </div>
+        <a href="#" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div"/>
+
+<!-- SKILLS -->
+<div class="section-wrap" id="skills">
+  <p class="section-label">// skills</p>
+  <h2>Technical Skills</h2>
+  <p class="sec-intro">Deep expertise across network security, architecture, and automation — from firewall policy to cloud infra.</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="sk-icon">🔥</div>
+      <h3>NGFW &amp; Security</h3>
+      <p>Fortinet FortiGate, UTM/IPS tuning, zone-based segmentation, DMZ, SSL inspection, zero-trust policy design.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🌐</div>
+      <h3>SD-WAN</h3>
+      <p>Fortinet SD-WAN &amp; Peplink SpeedFusion — intelligent path selection, SLA probes, dual-ISP failover, HA clustering.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🔐</div>
+      <h3>VPN &amp; Tunneling</h3>
+      <p>IPSec IKEv1/v2, SSL/TLS VPN, L2VPN, SpeedFusion bonding, PKI certificate authentication.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🗺️</div>
+      <h3>Routing &amp; Switching</h3>
+      <p>BGP, OSPF, static routing, VLANs, NAT, QoS, STP, VXLAN-based overlays, packet-level troubleshooting.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">📐</div>
+      <h3>Solution Design</h3>
+      <p>HLD/LLD documentation, PoC execution, network topology design, IP schema planning, as-built runbooks.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">☁️</div>
+      <h3>Cloud &amp; Automation</h3>
+      <p>AWS (VPC, Route 53, ALB), Python (Netmiko, Pandas), Cisco EEM, UiPath RPA, SNMP, NetFlow, RADIUS.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">📡</div>
+      <h3>Wireless &amp; Campus</h3>
+      <p>Huawei S-series switches, wireless APs, iMaster NCE-Campus cloud management and policy enforcement.</p>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">📊</div>
+      <h3>Monitoring &amp; NMS</h3>
+      <p>SolarWinds, PRTG, FortiAnalyzer, InControl 2, SNMP traps, NetFlow analysis for performance diagnostics.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="inner">
+    <p class="section-label" style="display:block;margin-bottom:0.4rem;">// contact</p>
+    <h2>Let's Connect</h2>
+    <p>Open to new projects, technical collaborations, or enterprise network and security opportunities in the UAE and beyond.</p>
+    <div class="contact-links">
+      <a href="mailto:Amjed1996@gmail.com" class="btn btn-primary">📧 Amjed1996@gmail.com</a>
+      <a href="tel:+971553664064" class="btn btn-outline">📞 +971 55 366 4064</a>
+      <a href="https://linkedin.com/in/yourprofile" class="btn btn-outline" target="_blank">💼 LinkedIn</a>
+      <a href="https://github.com/yourusername" class="btn btn-outline" target="_blank">🐙 GitHub</a>
+    </div>
+  </div>
+</div>
+
+<footer>Amjed Abubaker Mohamed · Network &amp; Security Engineer · Dubai, UAE · 2025 🟢</footer>
+
+<script>
+(function(){
+  const c=document.getElementById('net'),ctx=c.getContext('2d');
+  let W,H,nodes=[];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
+  function mkNode(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45,r:Math.random()*2.5+1.2,pulse:Math.random()*Math.PI*2,color:['#00D4FF','#8B5CF6','#FF6B6B','#00E5A0','#F97316'][Math.floor(Math.random()*5)]};}
+  function init(){resize();nodes=Array.from({length:65},mkNode);}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<155){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,212,255,${(1-d/155)*.2})`;ctx.lineWidth=.7;ctx.stroke();}
+      }
+    }
+    nodes.forEach(n=>{
+      n.pulse+=.035;
+      const g=Math.sin(n.pulse)*.35+.65;
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r*g,0,Math.PI*2);
+      ctx.fillStyle=n.color;ctx.shadowColor=n.color;ctx.shadowBlur=7;ctx.fill();ctx.shadowBlur=0;
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  init();draw();
+})();
+</script>
+</body>
+</html>
